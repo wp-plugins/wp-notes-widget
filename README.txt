@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: _silver
-Tags: widget, notes, sidebar, notification, news, events
+Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.1
 Tested up to: 4.0
 Stable tag: 0.1.1
@@ -15,14 +15,16 @@ Posts and pages have their own characteristics and uses, but sometimes there is 
 
 To further enhance the functionality of WP Notes Widget you can install these great plugins:
 
-[Post Expirator]: https://wordpress.org/plugins/post-expirator/ by Aaron Axelsen
-[Post Types Order]: https://wordpress.org/plugins/post-types-order/ by Nsp Code
+[Post Expirator](https://wordpress.org/plugins/post-expirator/) by Aaron Axelsen
+	
+[Post Types Order](https://wordpress.org/plugins/post-types-order/) by Nsp Code
 
 You can also take advantage of some built in Wordpress functionality which you may not have explored yet:
 
 * 'post dating' notes so that they only appear once a certain date and time has been reached
 
-WP Notes Widget has also been designed to work with translation plugins such as [WPML]: https://wordpress.org/plugins/post-expirator/ and [qTranslate]: https://wordpress.org/plugins/post-expirator/.
+WP Notes Widget has also been designed to work with [WPML](http://wpml.org/). 
+	
 
 == Installation ==
 
@@ -50,17 +52,17 @@ Select the "I will use my own CSS styles for WP Notes Widget" option on the widg
 1. This shows what fields and options are available when editing a single note. Similar to a posts.
 2. This shows the listing of all of the notes in the system. Similar to posts. 
 3. This shows the widget controls on the widget admin page.
-4. The show what the front end of the website looks like using the configuration specified. The layout which naturally differ depending on what theme is being used. 
+4. The show what the front end of the website looks like using the configuration specified. The layout will naturally differ depending on what theme is being used. 
 
 
 == Changelog ==
 
 = 0.1.1 =
-*Added option to include theme's widget wrapper (before_widget and after_widget)
-*Cleaned up efficiency of code in widget class
+* Added option to include theme's widget wrapper (before_widget and after_widget)
+* Cleaned up efficiency of code in widget class
 
 = 0.1 =
-*Initial version
+* Initial version
 
 
 
