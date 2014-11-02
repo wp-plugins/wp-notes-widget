@@ -3,7 +3,7 @@ Contributors: _silver
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.1
 Tested up to: 4.0
-Stable tag: 0.1.1
+Stable tag: 0.1.1.2
 License: GPLv2 or later
 
 
@@ -56,6 +56,9 @@ Select the "I will use my own CSS styles for WP Notes Widget" option on the widg
 
 
 == Changelog ==
+
+= 0.1.1.2 =
+* Minor adjustments to default CSS
 
 = 0.1.1 =
 * Added option to include theme's widget wrapper (before_widget and after_widget)
