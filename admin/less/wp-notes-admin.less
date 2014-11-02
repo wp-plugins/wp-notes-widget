@@ -1,0 +1,47 @@
+@import "elements.less";
+
+.clearfix {
+  zoom: 1; // For IE 6/7 (trigger hasLayout)
+
+  &:before, &:after {
+    content: "";
+    display: table;
+  }
+
+  &:after {
+    clear:both;
+  }
+}
+
+
+.wp-notes-widget-admin-container {
+	
+	label {
+		//display:block;
+	}
+	select {
+		display: block;
+	}
+
+}
+
+.wp-notes-label {
+	display:block;
+}
+
+.wp-notes-textarea {
+	height:100px;
+	width:300px;
+}
+
+.wp-notes-text {
+
+}
+
+.faded {
+	color:#555;
+}
+
+input#WP_Notes_action_link {
+	width:300px;
+}

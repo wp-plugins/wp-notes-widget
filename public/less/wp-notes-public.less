@@ -1,0 +1,454 @@
+ 
+@import "elements.less";
+//@import url(http://fonts.googleapis.com/css?family=Kalam:300,400,700);
+@import url('../fonts/Kalam/stylesheet.css');
+
+@text-colour-red : #D6061E;
+@text-colour-blue : #3825DD;
+@text-colour-black : #000;
+@text-colour-pink : #AA0D86;
+@text-colour-white : #fff;
+@text-colour-light-grey : #999;
+@text-colour-dark-grey : #333;
+
+@background-colour-yellow : #FEF20A;
+@background-colour-blue : #6ACEE5;
+@background-colour-green : #A0DE61;
+@background-colour-pink : #FCBBDD;
+@background-colour-orange : #FEA200;
+@background-colour-white : #fff;
+@background-colour-light-grey : #aaa;
+@background-colour-dark-grey : #444;
+
+/**
+ * BEGIN custom mixins 
+ */
+.wp-notes-widget-reset() {
+	background:none;
+	border:none;
+	padding:0;
+	margin:0;
+	list-style-type:none;
+	text-decoration:none;
+	&:before,
+	&:after {
+		display:none;
+	}
+}
+
+.transition (@transition) {
+	-webkit-transition: @transition;  
+	-moz-transition:    @transition;
+	-ms-transition:     @transition; 
+	-o-transition:      @transition;  
+}
+
+.text-colour (@color) {
+	color:@color !important;
+	a.wp-notes-action-link,
+	p,
+	h5,
+	h3 {
+		color:@color !important;
+	}
+}
+/**
+ * END custom mixins 
+ */
+
+
+.background-colour (@color) {
+	background-color:@color !important;
+	border-bottom: 1px solid darken(@color,10) !important;
+}
+
+.border-colour (@color) {
+	border-color:@color !important;
+	border-color:fade(@color,50%) !important;
+}
+
+
+aside {
+	display:block;
+}
+
+/**
+ * .use-wp-notes-style is used as a flag to indicate if any styles in this CSS file should be used.
+ * disabling .use-wp-notes-style can be useful if it is desired to override all of the built-in styles
+ */
+.wp-notes-class-widget.use-wp-notes-style {
+	background-color:transparent !important;
+	border:none !important;
+}
+
+.wp-notes-widget-container.use-wp-notes-style {
+	position:relative;
+	z-index:1;
+	padding-top:10px;
+
+	* {
+		.wp-notes-widget-reset();
+	}
+	.wp-notes-widget { 
+		font-family: 'Kalam', cursive;
+		//font-weight:300;
+		color:red;
+		padding:10px;
+		
+	    margin: 0 0px 30px 0;
+	    padding: 0px;
+	    
+	    border-bottom: 1px solid #efefef;
+	    position: relative;
+	   
+	    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset, 3px 3px 3px rgba(0, 0, 0, 0.15);
+	    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 60px rgba(0, 0, 0, 0.1) inset, 3px 3px 3px rgba(0, 0, 0, 0.15);
+	    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset, 3px 3px 3px rgba(0, 0, 0, 0.15);
+	    
+	    /**
+	     * need to present the border-radius value like this due to parsing problems with LESS, with the '/' included in the value.
+	     */
+	    border-radius: ~"0 0 120px 120px / 0 0 6px 6px";
+		min-height:150px;
+
+	    &.text-colour-red {
+	    	.text-colour(@text-colour-red);
+	    	
+	    }
+
+	    &.text-colour-blue {
+	    	.text-colour(@text-colour-blue);
+	    	
+	    }
+
+	    &.text-colour-black {
+	    	.text-colour(@text-colour-black);
+	    	
+	    }
+
+	    &.text-colour-pink {
+	    	.text-colour(@text-colour-pink);
+
+	    }	
+
+		&.text-colour-white {
+	    	.text-colour(@text-colour-white);
+	    	
+	    }
+
+		&.text-colour-light-grey {
+	    	.text-colour(@text-colour-light-grey);
+	    	
+	    }
+
+	    &.text-colour-dark-grey {
+	    	.text-colour(@text-colour-dark-grey);
+	    	
+	    }
+
+
+	    &.background-colour-yellow {
+	    	.background-colour(@background-colour-yellow);
+	    	
+	    }
+
+	    &.background-colour-blue {
+	    	.background-colour(@background-colour-blue);
+	    	
+	    }
+
+	    &.background-colour-green {
+	    	.background-colour(@background-colour-green);
+	    	
+	    }
+
+	    &.background-colour-pink {
+	    	.background-colour(@background-colour-pink);
+	    	
+	    }
+
+	    &.background-colour-orange {
+	    	.background-colour(@background-colour-orange);
+	    	
+	    }
+	    &.background-colour-white {
+	    	.background-colour(@background-colour-white);
+	    	
+	    }
+
+	    &.background-colour-light-grey {
+	    	.background-colour(@background-colour-light-grey);
+	    	
+	    }
+
+	    &.background-colour-dark-grey {
+	    	.background-colour(@background-colour-dark-grey);
+	    	
+	    }
+
+
+		&:after {  
+		    z-index: -1; 
+		    position: absolute; 
+		    background: transparent; 
+		    width: 70%; 
+		    height: 55%; 
+		    content: ''; 
+		    right: 30px; 
+		    bottom: 17px;
+		    -webkit-transform:  skew(15deg) rotate(6deg);
+		    -moz-transform:     skew(15deg) rotate(6deg);
+		    transform:          skew(15deg) rotate(6deg);
+		    -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
+		    -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
+		    box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
+		    display:none;
+		} 
+
+		&:before { 
+		    z-index: -2; 
+		    position: absolute; 
+		    background: transparent; 
+		    width: 70%; 
+		    height: 55%; 
+		    content: ''; 
+		    left: 30px;
+		    bottom: 17px;
+		    -webkit-transform:  skew(-15deg) rotate(-6deg); 
+		    -moz-transform:     skew(-15deg) rotate(-6deg); 
+		    transform:          skew(-15deg) rotate(-6deg);
+		    -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
+		    -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
+		    box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
+			display:none;
+		}
+
+		.header-area {
+			//background-color:fade(#fff, 50);
+			position:relative;
+			.pushpin {
+				background: url("../images/thumbtack-pushpin-2-md.png") no-repeat center top;
+				background-size: 60px auto;
+				width:100%;
+				height:50px;
+				margin:0px auto 0;
+				top:-10px;
+				position:absolute;
+
+				&.thumb-tack-colour-blue {
+					background-image: url("../images/thumbtack-blue.png");
+				}
+
+				&.thumb-tack-colour-red {
+					background-image: url("../images/thumbtack-red.png");
+				}
+
+				&.thumb-tack-colour-green {
+					background-image: url("../images/thumbtack-green.png");
+				}
+				&.thumb-tack-colour-gray {
+					background-image: url("../images/thumbtack-gray.png");
+				}
+				&.thumb-tack-colour-orange {
+					background-image: url("../images/thumbtack-orange.png");
+				}
+				&.thumb-tack-colour-pink {
+					background-image: url("../images/thumbtack-pink.png");
+				}
+				&.thumb-tack-colour-teal {
+					background-image: url("../images/thumbtack-teal.png");
+				}
+				&.thumb-tack-colour-yellow {
+					background-image: url("../images/thumbtack-yellow.png");
+				}
+
+				.ie8 & {
+					display:none;
+				}
+			}	
+			h3 {
+				padding:40px 15px 0 !important;
+				margin:0 !important;
+				
+				text-align:center;
+				
+				font-size:1.4rem;
+				text-transform:	uppercase;
+				font-family: 'Kalam', cursive;
+				text-shadow: 0 0 0 rgba(0,0,0,0) !important;
+				display:block;
+				border:none;
+			}
+
+		}
+
+
+			
+		ul.wp-notes-widget-list {
+			h5 {
+		    	font-size:1.3em;
+		    	font-family: 'Kalam', cursive;
+		    	margin:0 0 15px;
+		    	padding:0;
+		    	line-height:1.1em;
+		    	text-shadow:none !important;
+		    }
+		    p {
+		    	font-size: 1.1em;
+				line-height: 1.1em;
+				font-family: 'Kalam', cursive;
+				margin:0 0 15px;
+		    	padding:0;
+				text-shadow:none !important;
+		    	&:last-child {
+			   		margin-bottom:0;
+			   	}
+		    }
+
+		    p.wp-notes-widget-date {
+				font-size:0.9em;  
+			}
+
+			p.wp-notes-widget-no-notes {
+				text-align: center;
+			}
+
+
+		}
+
+		a.wp-notes-action-link {
+			padding:7px 10px 5px;
+			display:inline-block;
+			background-color: #fff;
+			background-color: rgba(255,255,255,0.4);
+			border:1px solid rgba(255,255,255,0.5);
+			.transition(background-color .1s ease-out);
+			text-decoration: none;
+			&:hover,
+			&:focus {		
+				background-color: rgba(255,255,255,0.6);
+				text-decoration: none !important;
+			}
+		}
+
+		&.background-colour-white {
+			a.wp-notes-action-link {
+				background-color: #ddd;
+				background-color: fade(#ddd, 90%);
+				&:hover,
+				&:focus {		
+					background-color: fade(#ddd,60%);
+				}
+			}
+		}
+
+		&.text-colour-white {
+			a.wp-notes-action-link {
+				background-color: #bbb;
+				background-color: fade(#bbb, 75%);
+				&:hover,
+				&:focus {		
+					background-color: fade(#bbb,50%);
+				}
+			}
+		}
+
+		&.text-colour-light-grey.background-colour-dark-grey {
+			a.wp-notes-action-link {
+				background-color: #444;
+				background-color: fade(#444, 75%);
+				&:hover,
+				&:focus {		
+					background-color: darken(#444,10%);
+				}
+			}
+		}
+
+	}	
+
+}
+
+.wp-notes-widget-container.use-wp-notes-style.wp-notes-no-title {
+
+	.header-area {
+
+		h3 {
+			padding-top:25px;
+			
+		}
+
+	}
+
+}
+
+.use-wp-notes-style ul.wp-notes-widget-list {
+	padding:15px !important;
+	margin:0 !important;
+	list-style-type:none;
+	//font-size:1.2rem;
+	li {
+
+		&:first-child {
+			margin-top:0px !important;
+			padding-top:0px !important;
+			border-top:none !important;
+		}
+
+		text-transform: uppercase;;
+		margin-top:10px 0 0 0 !important;
+		padding:10px 0 10px 0 !important;
+		border-top-width:1px !important;
+		border-top-style: dotted !important;
+		border-bottom:none !important;
+		list-style-type:none;
+		
+		&:before,
+		&:after {
+			
+			display:none !important;
+		}
+	}
+
+	
+}
+
+.use-wp-notes-style {
+
+	.text-colour-red ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-red);
+		
+	}
+
+	.text-colour-blue ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-blue);
+		
+	}
+
+	.text-colour-black ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-black);
+		
+	}
+
+	.text-colour-pink ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-pink);
+		
+	}
+		
+	.text-colour-white ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-white);
+		
+	}
+
+	.text-colour-light-grey ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-light-grey);
+		
+	}
+
+	.text-colour-dark-grey ul.wp-notes-widget-list li {
+		.border-colour(@text-colour-dark-grey);
+		
+	}
+
+}
+
+
