@@ -7,7 +7,7 @@ Stable tag: 0.1.1.2
 License: GPLv2 or later
 
 
-WP Notes Widget adds a 'sticky note' style widget to your wordpress site. Each note is it's own post within Wordpress. 
+WP Notes Widget adds a 'sticky note' style widget to your Wordpress site. Customize the look for your needs. 
 
 == Description ==
 
@@ -25,6 +25,12 @@ You can also take advantage of some built in Wordpress functionality which you m
 
 WP Notes Widget has also been designed to work with [WPML](http://wpml.org/). 
 	
+Some possible uses include:
+
+* a store (online and/or 'brick and mortar') displaying notifications about new products, sales, or holiday hours
+* a recreational facility displaying information about new programs, sales, holiday hours
+* displaying important deadlines in various contexts
+
 
 == Installation ==
 
