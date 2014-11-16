@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: _silver
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
-Requires at least: 3.1
+Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 0.1.1.2
+Stable tag: 0.1.3
 License: GPLv2 or later
 
 
