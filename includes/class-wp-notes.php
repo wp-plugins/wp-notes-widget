@@ -67,7 +67,7 @@ class WP_Notes {
 	public function __construct() {
 
 		$this->WP_Notes = 'wp-notes';
-		$this->version = '0.1.0';
+		$this->version = '0.1.3';
 
 		$this->load_dependencies();
 		$this->set_locale();
