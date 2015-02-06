@@ -54,8 +54,6 @@ class WP_Notes_Public {
 	}
 
 	
-
-
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -74,7 +72,7 @@ class WP_Notes_Public {
 		 * class.
 		 */
 		
-		wp_enqueue_style( $this->name, plugin_dir_url( __FILE__ ) . 'css/wp-notes-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->name . '-style', plugin_dir_url( __FILE__ ) . 'css/wp-notes-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -97,6 +95,7 @@ class WP_Notes_Public {
 		 *
 		 * Currently there are no scripts to include
 		 */
+		wp_enqueue_style( $this->name . '-fontawesome', 'http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 
 		//wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) . 'js/wp-notes-public.js', array( 'jquery' ), $this->version, false );
 

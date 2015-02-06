@@ -177,12 +177,14 @@ class WP_Notes {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-		$this->loader->add_action( 'add_meta_boxes',  $plugin_admin, 'add_note_metabox' );
-		$this->loader->add_action( 'save_post',  $plugin_admin, 'save_note' );
-
-		$this->loader->add_action('init',  $plugin_admin, 'notes_post_type_init');
-
+		$this->loader->add_action( 'add_meta_boxes',  			$plugin_admin, 'add_note_metabox' );
+		$this->loader->add_action( 'save_post',  						$plugin_admin, 'save_note' );
+		$this->loader->add_action( 'init',  								$plugin_admin, 'notes_post_type_init');
+		$this->loader->add_action( 'init',  								$plugin_admin, 'add_notes_image_size'); 
+		$this->loader->add_action( 'admin_notices',  				$plugin_admin, 'add_feedback_notice'); 
+		$this->loader->add_action( 'admin_init',  					$plugin_admin, 'dismiss_feedback_notice');
+		$this->loader->add_filter('post_updated_messages',  $plugin_admin, 'notes_post_updated_messages');
+		
 	}
 
 	/**

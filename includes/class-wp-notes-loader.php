@@ -3,7 +3,6 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://example.com
  * @since      0.1.0
  *
  * @package    WP_Notes
@@ -19,7 +18,6 @@
  *
  * @package    WP_Notes
  * @subpackage WP_Notes/includes
- * @author     Your Name <email@example.com>
  */
 class WP_Notes_Loader {
 

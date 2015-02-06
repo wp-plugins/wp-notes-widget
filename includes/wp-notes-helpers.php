@@ -7,7 +7,8 @@
  * @param    string    $url    The string which may or may not have 'http://' or 'https://' at the start.
  */
 function wpnw_addhttp($url) {
-    if ( !empty($url) && !preg_match("~^(?:f|ht)tps?://~i", $url)) {
+
+    if ( $url && ($url != '') && !preg_match("~^(?:f|ht)tps?://~i", $url)) {
         $url = "http://" . $url;
     }
     return $url;

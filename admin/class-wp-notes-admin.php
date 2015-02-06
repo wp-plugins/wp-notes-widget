@@ -53,6 +53,12 @@ class WP_Notes_Admin {
 
 	}
 
+
+	/**
+	 * Create the Notes post type
+	 * 
+	 * @since 0.1.0
+	 */
  	 function notes_post_type_init() {
 
 	  	$labels = array(
@@ -73,30 +79,44 @@ class WP_Notes_Admin {
 		);
 
 		$args = array(
-		    'labels' => $labels,
-		    'public' => false,
-		    'publicly_queryable' => false,
-		    'exclude_from_search' => true,
-		    'show_ui' => true, 
-		    'show_in_menu' => true, 
-		    'query_var' => true,
-		    'rewrite' => false,
-		    'capability_type' => 'post',
-		    'has_archive' => false, 
-		    'hierarchical' => false,
-		    'menu_position' => null,
-		    'supports' => array('title','page-attributes')
+	    'labels' 							=> $labels,
+	    'public' 							=> false,
+	    'publicly_queryable' 	=> false,
+	    'exclude_from_search' => true,
+	    'show_ui' 						=> true, 
+	    'show_in_menu' 				=> true, 
+	    'query_var' 					=> true,
+	    'rewrite' 						=> false,
+	    'capability_type' 		=> 'post',
+	    'has_archive' 				=> false, 
+	    'hierarchical' 				=> false,
+	    'menu_position' 			=> null,
+	    'supports' 						=> array('title','page-attributes')
 		); 
 
-	  	register_post_type('nw-item',$args);
+	  register_post_type('nw-item',$args);
 
 	} // end notes_post_type_init
 
 
- 	 /**
-	 * Adds the meta box below the post content editor on the post edit dashboard.
+
+	/**
+	 * Create new image size for image displayed in note
+	 * 
+	 * @since    0.1.3
 	 */
-	 function add_note_metabox() {
+	function add_notes_image_size() {
+		add_image_size( 'wp-notes-widget-image', 400 );
+	}
+
+
+
+ 	/**
+	 * Adds the meta box below the post content editor on the post edit dashboard.
+	 * 
+	 * @since    0.1.0
+	 */
+	function add_note_metabox() {
 
 		add_meta_box(
 			'WP_Notes_item_content',
@@ -107,47 +127,104 @@ class WP_Notes_Admin {
 			'high'
 		);
 
-	} // end add_note_metabox
+	}
 
 
 	/**
-	 * Renders the nonce, textarea, and text inputrs for the note.
+	 * Notes update messages.
+	 *
+	 * See /wp-admin/edit-form-advanced.php
+	 * @since    0.1.3
+	 * @param array $messages Existing post update messages.
+	 * @return array Amended post update messages with new Note update messages.
+	 */
+	function notes_post_updated_messages( $messages ) {
+
+		$post             = get_post();
+		$post_type        = get_post_type( $post );
+		$post_type_object = get_post_type_object( $post_type );
+		
+		$messages['nw-item'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			1  => __( 'Note updated.' ),
+			2  => __( 'Note details updated.' ),
+			3  => __( 'Note details deleted.'),
+			4  => __( 'Note updated.' ),
+			/* translators: %s: date and time of the revision */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Note restored to revision from %s.' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6  => __( 'Note published.' ),
+			7  => __( 'Note saved.' ),
+			8  => __( 'Note submitted.' ),
+			9  => sprintf(
+				__( 'Note scheduled for: <strong>%1$s</strong>.' ),
+				// translators: Publish box date format, see http://php.net/date
+				date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) )
+			),
+			10 => __( 'Note draft updated.' )
+		);
+	 
+		return $messages;
+	} // end notes_post_updated_messages
+
+
+
+	/**
+	 * Renders the nonce, textarea, and text inputs for the note.
+	 *
+	 * @since   0.1.0
+	 * @param  	$post 	current post object 
 	 */
 	function WP_Notes_meta_display( $post ) {
 		
-		$wp_notes_data = get_post_meta( $post->ID, 'WP_Notes_data', true );
-		$text = !empty($wp_notes_data['text']) ? esc_html($wp_notes_data['text']) : '';
-		$action_text = !empty($wp_notes_data['action_text']) ? esc_html($wp_notes_data['action_text']) : '';
-		$action_link = !empty($wp_notes_data['action_link']) ? esc_html($wp_notes_data['action_link']) : '';
+		include( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-notes-post-data.php' );
+		
+		$wp_notes_data = getNotePostData( $post->ID);
+
+		function WP_Notes_get_hidden_class_output($action_link_type,  $link_type ) {
+			
+			switch ($link_type) {
+				case 'plain':
+					if ( $action_link_type == 'download') {
+						echo 'wp-notes-hidden';
+					}
+			   	break;
+			  	case 'download':
+			    	if ( (!(bool)$action_link_type) || $action_link_type == 'plain') {
+			    		echo 'wp-notes-hidden';
+					}
+			    break;
+			}
+		}
+
+		function WP_Notes_get_selected_output($action_link_type, $link_type ) {
+			switch ($link_type) {
+				case 'plain':
+					if ( (!(bool)$action_link_type) || $action_link_type == 'plain') {
+						echo 'checked';
+					}
+			   		break;
+			  	case 'download':
+			    	if ( $action_link_type == 'download') {
+			    		echo 'checked';
+					}
+			    	break;
+			}
+		}
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'WP_Notes_nonce' );
-
-		$html = '<p>
-					<label class="wp-notes-label" for="WP_Notes_text">'. __('Notes Text', 'wp-notes-widget').'</label>
-					<textarea  class="wp-notes-textarea"  id="WP_Notes_text" name="WP_Notes_text" placeholder="' . __( 'Enter your note here.', 'wp-notes-widget' ) . '">' . $text . '</textarea>
-				</p>';
-
-
-		$html .= '<p>
-					<label  class="wp-notes-label"  for="WP_Notes_action_text">'. __('Action Text', 'wp-notes-widget').'</label>
-					<input type="text" class="wp-notes-text"   id="WP_Notes_action_text" name="WP_Notes_action_text" placeholder="'. __('Action Link Text', 'wp-notes-widget') .'"  value="'. $action_text  .'" />	
-				</p>';
-
-		$html .= '<p>
-					<label  class="wp-notes-label"  for="WP_Notes_action_link">'. __('Action Link', 'wp-notes-widget').'</label>
-					<input type="text" class="wp-notes-text"   id="WP_Notes_action_link" name="WP_Notes_action_link" placeholder="'. 'http://example.com' .'" value="'. $action_link .'" />	
-				</p>';
-
-
+		ob_start();
+		include( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-post-view.php' );
+		$html = ob_get_clean();
 		echo $html;
 
 	} // end WP_Notes_meta_display
 
 
- 	 /**
+ 	/**
 	 * Saves the note for the given post.
 	 *
-	 * @params	$post_id	The ID of the post that we're serializing
+	 * @since    0.1.0
+	 * @param	$post_id	The ID of the post that we're serializing
 	 */
 	function save_note( $post_id ) {
 
@@ -170,26 +247,66 @@ class WP_Notes_Admin {
 				} 
 			} 
 
-			/**
-			 * sanitize all of the POST data and place it into an array.
-			 */
-			$wp_notes_data = array();
-			$wp_notes_data['text'] = isset( $_POST['WP_Notes_text'] ) ?  implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $_POST['WP_Notes_text'] ) ))  : '';
-			$wp_notes_data['action_text'] = isset( $_POST['WP_Notes_action_text'] ) ? sanitize_text_field($_POST['WP_Notes_action_text']) : '';
-			$wp_notes_data['action_link'] = isset( $_POST['WP_Notes_action_link'] ) ? wpnw_addhttp( sanitize_text_field($_POST['WP_Notes_action_link'])) : '';
 			
+			//sanitize all of the POST data and place it into an array. 
+			$wp_notes_data = array();
+			$wp_notes_data['text'] 								= isset( $_POST['WP_Notes_text'] ) ?  implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $_POST['WP_Notes_text'] ) ))  : '';
+			//the filter for this text only allows for newline characters as well as regular characters
 
-			/**
-			 * Wordpress automatically serializes the data and updates database with the new values.
-			 */
+			$wp_notes_data['action_text'] 				= isset( $_POST['WP_Notes_action_text'] ) 				? sanitize_text_field($_POST['WP_Notes_action_text']) : '';
+			$wp_notes_data['action_link'] 				= isset( $_POST['WP_Notes_action_link']) 					? wpnw_addhttp( sanitize_text_field($_POST['WP_Notes_action_link'])) : '';
+			$wp_notes_data['image_id'] 						= isset( $_POST['WP_Notes_image_id'] ) 						? sanitize_text_field($_POST['WP_Notes_image_id']) : '';
+			$wp_notes_data['download_id'] 				= isset( $_POST['WP_Notes_download_id'] ) 				? sanitize_text_field($_POST['WP_Notes_download_id']) : '';
+			$wp_notes_data['plain_link_new_tab'] 	= isset( $_POST['WP_Notes_plain_link_new_tab'] ) 	? sanitize_text_field($_POST['WP_Notes_plain_link_new_tab']) : '';
+			$wp_notes_data['action_link_type'] 		= isset( $_POST['WP_Notes_action_link_type'] ) 		? sanitize_text_field($_POST['WP_Notes_action_link_type']) : '';
+			
+			//Wordpress automatically serializes the data and updates database with the new values.
 			update_post_meta( $post_id, 'WP_Notes_data', $wp_notes_data );
 			
 
 		} // end if
 
-	} // end save_notice
+	} // end save_note
 
 	
+	/**
+	* Create the notice that will ask users for feedback. 
+	* 
+	* @since 0.1.4
+	*/
+	function add_feedback_notice() {
+		global $current_user;
+		$userid = $current_user->ID;
+
+		if ( !get_user_meta( $userid, 'dismiss_wp_notes_widget_notice' )  ) {
+			echo '
+				<div class="updated">
+					<p>Thanks for downloading/updating WP Notes Widget!
+					What features would you like to see? 
+					Let us know on the <a href="https://wordpress.org/support/plugin/wp-notes-widget" target="_blank" >support forums</a> or <a href="https://twitter.com/webrockstar_net" target="_blank" >Twitter</a>. <a href="?dismiss_wp_notes_widget_notice=yes" class="button-primary" >Dismiss</a></p>
+				</div>';
+		} 
+
+	} // end add_feedback_notice
+
+
+	/**
+	* To ensure the notice is not displayed after it is dismissed, a flag is set in the metadata for the user.
+	* 
+	* @since 0.1.4
+	*/
+	function dismiss_feedback_notice() {
+		
+		global $current_user;
+		$userid = $current_user->ID;
+		
+		// If "Dismiss" link has been clicked, user meta field is added
+		if ( isset( $_GET['dismiss_wp_notes_widget_notice'] ) && 'yes' == $_GET['dismiss_wp_notes_widget_notice'] ) {
+			add_user_meta( $userid, 'dismiss_wp_notes_widget_notice', 'yes', true );
+		}
+
+	} // end dismiss_feedback_notice
+
 
 	/**
 	 * Register the stylesheets for the Dashboard.
@@ -230,10 +347,12 @@ class WP_Notes_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 *
-		 * This function is not used in this version of the plugin.
+		 * Need to evaluate best approach for enqueing js/css files needed to select media.
+		 * wp_enqueue_media() works, but it breaks the consistency of how hooks are queued in the plugin. 
 		 */
-
-		//wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) . 'js/wp-notes-admin.js', array( 'jquery' ), $this->version, false );
+		
+		wp_enqueue_media();  
+		wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) . 'js/wp-notes-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
