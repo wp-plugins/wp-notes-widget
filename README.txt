@@ -10,7 +10,7 @@ Display important, short, time sensitive text and media in a 'sticky note' style
 
 == Description ==
 
-**New in version 0.1.4: control the font size of WP Notes Widget and easily tweet your notes.**   
+**If you like WP Notes Widget be sure to check out [Notes Widget Wrapper]('https://wordpress.org/plugins/notes-widget-wrapper') as well!**  
 
 Posts and pages have their own characteristics and uses, but sometimes there is a need to display important, very short, time sensitive information which don't really fit into a post or page. WP Notes Widget fills this gap. The visual design is similar to real sticky notes which adds to the effective communication of the message.    
 
