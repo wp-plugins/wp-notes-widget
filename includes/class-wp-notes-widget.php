@@ -237,7 +237,6 @@
 			$widget_data = getNotesWidgetData($instance);
 
 			extract( $widget_data, EXTR_SKIP );
-			
 			// Display the admin form
 			include( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-widget-view.php' );
 
