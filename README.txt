@@ -6,7 +6,7 @@ Tested up to: 4.1
 Stable tag: 0.2.0
 License: GPLv2 or later
 
-Display important, short, time sensitive text and media in a 'sticky note' style. Auto Tweet your notes.
+Display important, short, time sensitive text and media in a 'sticky note' style. Auto tweet your notes.
 
 == Description ==
 
