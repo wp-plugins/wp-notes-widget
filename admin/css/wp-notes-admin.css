@@ -21,13 +21,23 @@
 /*============================================================================
   NOTES POST PAGE
 ==============================================================================*/
+.wp-notes-post-admin-container .wp-notes-margin-bottom {
+  margin-bottom: 20px;
+}
+.wp-notes-post-admin-container .wp-notes-no-margin-bottom {
+  margin-bottom: 0px !important;
+}
+.wp-notes-post-admin-container .over-limit {
+  color: red !important;
+}
 .wp-notes-post-admin-container .wp-notes-label {
   display: block;
   font-weight: bold;
 }
 .wp-notes-post-admin-container .wp-notes-textarea {
   height: 130px;
-  width: 300px;
+  max-width: 300px;
+  width: 100%;
 }
 .wp-notes-post-admin-container .wp-notes-hidden {
   position: absolute;
@@ -161,6 +171,13 @@
   position: relative;
   left: 2px;
 }
+.wp-notes-post-admin-container #WP_Notes_twitter_chars_remaining {
+  font-weight: bold;
+}
+.wp-notes-post-admin-container #WP_Notes_twitter_over_limit_text {
+  display: block;
+  color: red;
+}
 /*============================================================================
   WIDGET ADMINISTRATION PAGE
 ==============================================================================*/
@@ -196,4 +213,14 @@
 }
 .wp-notes-widget-admin-container select {
   display: block;
+}
+/*============================================================================
+  SETTINGS PAGE
+==============================================================================*/
+input.wp-notes-widget-long {
+  max-width: 500px;
+  width: 100%;
+}
+.wp-notes-widget-limit-width {
+  max-width: 600px;
 }

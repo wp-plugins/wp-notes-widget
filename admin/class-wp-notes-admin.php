@@ -3,7 +3,6 @@
 /**
  * The dashboard-specific functionality of the plugin.
  *
- * @link       http://example.com
  * @since      0.1.0
  *
  * @package    WP_Notes
@@ -110,28 +109,8 @@ class WP_Notes_Admin {
 	}
 
 
-
- 	/**
-	 * Adds the meta box below the post content editor on the post edit dashboard.
-	 * 
-	 * @since    0.1.0
-	 */
-	function add_note_metabox() {
-
-		add_meta_box(
-			'WP_Notes_item_content',
-			__( 'Note Content', 'wp-notes-widget' ),
-			array( $this, 'WP_Notes_meta_display' ),
-			'nw-item',
-			'normal',
-			'high'
-		);
-
-	}
-
-
 	/**
-	 * Notes update messages.
+	 * Notes admin update messages.
 	 *
 	 * See /wp-admin/edit-form-advanced.php
 	 * @since    0.1.3
@@ -166,6 +145,99 @@ class WP_Notes_Admin {
 		return $messages;
 	} // end notes_post_updated_messages
 
+
+
+	/*============================================================================
+	  DISPLAY NOTE META BOXES
+	==============================================================================*/
+
+	/**
+	* Adds the meta box below the post content editor on the post edit dashboard.
+	* 
+	* @since    0.1.0
+	*/
+	function add_note_metabox() {
+
+		add_meta_box(
+			'WP_Notes_item_content',
+			__( 'Note Content', 'wp-notes-widget' ),
+			array( $this, 'WP_Notes_meta_display' ),
+			'nw-item',
+			'normal',
+			'high'
+		);
+
+		add_meta_box(
+			'WP_Notes_item_twitter',
+			__( 'Auto Twitter Post', 'wp-notes-widget' ),
+			array( $this, 'WP_Notes_twitter_post_display' ),
+			'nw-item',
+			'side',
+			'high'
+		);
+
+	}
+
+
+	/**
+	 * meta_box for Tweet related fields.
+	 *
+	 * @since    0.2.0
+	 */
+	function WP_Notes_twitter_post_display( $post ) {
+		
+		$twitter_credentials = get_option( 'wp_notes_widget_twitter_credentials' );	
+
+		if (!empty($twitter_credentials['api_key']) && 
+			!empty($twitter_credentials['api_secret']) && 
+			!empty($twitter_credentials['token']) && 
+			!empty($twitter_credentials['token_secret']) ) { 
+			//if Twitter API credentials are set
+
+			if ( get_transient('twit_url_short') && get_transient('twit_url_short_s') ) {
+				//check to see if cached copy of url lengths are still valid
+
+				$twitter_url_short_length 			= get_transient('twit_url_short');
+				$twitter_url_short_length_https = get_transient('twit_url_short_s');	
+			
+			} else {
+				//if cached copy of url lengths are too old, we need to contact twitter and get these values again
+
+
+				/*==========  LOAD AND SET UP TWITTER API LIBRARY  ==========*/
+
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/codebird/src/codebird.php';
+				
+				\WP_Notes_Widget_Codebird\Codebird::setConsumerKey($twitter_credentials['api_key'], $twitter_credentials['api_secret']); // static, see 'Using multiple Codebird instances'
+				$cb = \WP_Notes_Widget_Codebird\Codebird::getInstance();
+				$cb->setToken($twitter_credentials['token'], $twitter_credentials['token_secret']);
+
+				$reply = $cb->help_configuration();
+				
+				$twitter_url_short_length 			= !empty($reply->short_url_length) ? $reply->short_url_length : 22;
+				$twitter_url_short_length_https = !empty($reply->short_url_length_https) ? $reply->short_url_length_https : 23;				
+
+				set_transient( 'twit_url_short', $twitter_url_short_length,  (60 * 60 * 24) );
+				set_transient( 'twit_url_short_s', $twitter_url_short_length_https,  (60 * 60 * 24) );
+
+			}
+
+			include( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-notes-post-data.php' );
+			
+			$wp_notes_twitter_data 	= getNotePostTwitterData( $post->ID);
+			$wp_notes_tweet_history = getNotePostTweetHistory( $post->ID);
+			
+			ob_start();
+			include( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-post-twitter-view.php' );
+			$html = ob_get_clean();
+			echo $html;
+
+		} else {
+
+			include( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-post-twitter-no-credentials-view.php' );
+
+		}
+	}
 
 
 	/**
@@ -220,6 +292,11 @@ class WP_Notes_Admin {
 	} // end WP_Notes_meta_display
 
 
+
+	/*============================================================================
+	  SAVE NOTE ACTIONS
+	==============================================================================*/
+
  	/**
 	 * Saves the note for the given post.
 	 *
@@ -247,7 +324,9 @@ class WP_Notes_Admin {
 				} 
 			} 
 
-			
+		
+			/*==========  SAVE NOTE META DATA  ==========*/
+
 			//sanitize all of the POST data and place it into an array. 
 			$wp_notes_data = array();
 			$wp_notes_data['text'] 								= isset( $_POST['WP_Notes_text'] ) ?  implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $_POST['WP_Notes_text'] ) ))  : '';
@@ -264,11 +343,331 @@ class WP_Notes_Admin {
 			update_post_meta( $post_id, 'WP_Notes_data', $wp_notes_data );
 			
 
+
+			/*==========  PARSE AND SAVE TWITTER RELATED DATA  ==========*/
+			
+			$push_tweet = 0;
+			if (isset($_POST['WP_Notes_push_tweet'])) {
+				$push_tweet = 1;
+			}
+
+			$wp_notes_twitter_data['push_tweet'] 			= null; //set this value to null so user will have to manually check the checkbox again if they want to send another tweet
+			$wp_notes_twitter_data['tweet_body'] 			= isset( $_POST['WP_Notes_tweet_body'] ) 		? sanitize_text_field($_POST['WP_Notes_tweet_body']) : '';
+			
+			//Wordpress automatically serializes the data and updates database with the new values.
+			update_post_meta( $post_id, 'WP_Notes_twitter_data', $wp_notes_twitter_data );
+
+
+
+			/*==========  TWITTER POSTING  ==========*/
+			
+			if ($push_tweet) {
+				
+				$twitter_credentials = get_option( 'wp_notes_widget_twitter_credentials' );	
+				if (!empty($twitter_credentials['api_key']) && 
+					!empty($twitter_credentials['api_secret']) && 
+					!empty($twitter_credentials['token']) && 
+					!empty($twitter_credentials['token_secret']) ) { 
+					//if Twitter credentials are set
+
+					require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/codebird/src/codebird.php';
+					
+					\WP_Notes_Widget_Codebird\Codebird::setConsumerKey($twitter_credentials['api_key'], $twitter_credentials['api_secret']); // static, see 'Using multiple Codebird instances'
+					$cb = \WP_Notes_Widget_Codebird\Codebird::getInstance();
+					$cb->setToken($twitter_credentials['token'], $twitter_credentials['token_secret']);
+
+					//parse status content and embed link, if needed
+				  switch ($wp_notes_data['action_link_type']) {
+				    case "plain":
+				    	$embed_link = $wp_notes_data['action_link'];
+
+			        break;
+				    case "download":
+
+				    	if ((bool)$wp_notes_data['download_id']) {
+						    $embed_link = wp_get_attachment_url( $wp_notes_data['download_id'] );
+							} else {
+								$embed_link = '';	
+							}
+
+			        break;
+				    default:
+				    	$embed_link = '';
+
+			        break;
+				    
+					}
+
+					$tweet_text =str_replace("*url*", $embed_link, $wp_notes_twitter_data['tweet_body']);
+					 
+					//send the tweet to twitter
+					if (empty($wp_notes_data['image_id'] )) {
+						$reply = $cb->statuses_update('status=' . $tweet_text);
+					
+					} else {
+						
+						$file = wp_get_attachment_image_src( $wp_notes_data['image_id'], array(600,600) );
+						$file = $file[0];
+						$reply = $cb->media_upload(array(
+				        'media' => $file
+				    ));
+
+						$media_id = $reply->media_id_string;
+						$reply = $cb->statuses_update(array(
+						    'status' => $tweet_text,
+						    'media_ids' => $media_id
+						));
+
+					}
+
+					//set up appropriate notice based on twitter response
+				  $status_class = substr($reply->httpstatus,0, 1); 
+				  switch ($status_class) {
+				    case "2":
+
+	    				$wp_notes_tweet_history = get_post_meta( $post_id, 'WP_Notes_tweet_history', true );
+							
+	    				//if tweet is sent successfully, we add a timestamp to the tweet history
+							if (empty($wp_notes_tweet_history)) {
+								$wp_notes_tweet_history = array();
+							}
+							array_push($wp_notes_tweet_history, current_time('timestamp') );
+							update_post_meta( $post_id, 'WP_Notes_tweet_history', $wp_notes_tweet_history );
+
+			        add_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_success' ), 99 );
+			        break;
+				    case "4":
+			        add_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_error' ), 99 );
+			        break;
+				    case "5":
+			        add_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_down' ), 99 );
+			        break;
+				    
+					}
+				}
+			}
 		} // end if
 
 	} // end save_note
 
-	
+
+
+	/*============================================================================
+	  ADMIN NOTICES FROM TWITTER POST RESPONSE
+	==============================================================================*/
+
+	public function add_notice_twitter_success( $location ) {
+   	remove_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_success' ), 99 );
+   	return add_query_arg( array( 'twitter_update_status' => '2' ), $location );
+  }
+
+	public function add_notice_twitter_error( $location ) {
+   	remove_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_error' ), 99 );
+   	return add_query_arg( array( 'twitter_update_status' => '4' ), $location );
+  }
+
+	public function add_notice_twitter_down( $location ) {
+   	remove_filter( 'redirect_post_location', array( $this, 'add_notice_twitter_down' ), 99 );
+   	return add_query_arg( array( 'twitter_update_status' => '5' ), $location );
+  }
+
+  public function twitter_admin_notices() {
+   	if ( ! isset( $_GET['twitter_update_status'] ) ) {
+     	return;
+   	} else {
+
+   		switch ($_GET['twitter_update_status']) {
+		    case "2":
+	        ?>
+			   	<div class="updated">
+			      <p><?php _e('Tweet successfully posted.', 'wp-notes-widget') ?></p>
+			   	</div>
+
+	        <?php
+	        break;
+		    case "4":
+	        ?>
+			   	<div class="error">
+			      <p><?php _e('There was an error posting your Tweet. Check your configuration and ensure your Tweet is not a recent duplicate, and does not exceed 140 characters.', 'wp-notes-widget') ?></p>
+			   	</div>
+
+	        <?php
+	        break;
+		    case "5":
+	       	?>
+			   	<div class="error">
+			      <p><?php _e('Twitter is currently experiencing technical difficulties and your Tweet cannot be sent right now. Please try again later.', 'wp-notes-widget') ?></p>
+			   	</div>
+
+	       	<?php
+	        break;
+		    
+			}
+   	}
+  }
+
+
+
+  /*============================================================================
+    SETTINGS PAGE
+  ==============================================================================*/
+
+  function wp_notes_add_settings_page() {
+ 
+	  add_submenu_page(
+	  	'options-general.php',
+	    'WP Notes Widget Settings',            							// The title to be displayed in the browser window for this page.
+	    'WP Notes Widget Settings',            							// The text to be displayed for this menu item
+	    'manage_options',            												// Which type of users can see this menu item
+	    'wp-notes-widget-settings',   											// The unique ID - that is, the slug - for this menu item
+	     array( $this, 'wp_notes_widget_settings_display')  // The name of the function to call when rendering this menu's page
+	  );
+	 
+	} 
+ 
+	//render page for our Twitter API credentials
+	function wp_notes_widget_settings_display() {
+	?>
+	  <!-- Create a header in the default WordPress 'wrap' container -->
+	  <div class="wrap">
+	   
+	    <div id="icon-themes" class="icon32"></div>
+	    <h2><?php _e('WP Notes Widget Settings','wp-notes-widget'); ?></h2>
+	    
+	    <form method="post" action="options.php">
+	      <?php settings_fields( 'wp_notes_widget_twitter_credentials_page' ); ?>
+	      <?php do_settings_sections( 'wp_notes_widget_twitter_credentials_page' ); ?>         
+	      <?php submit_button(); ?>
+	    </form>
+	       
+	  </div><!-- /.wrap -->
+	<?php
+	} 
+ 
+	function wp_notes_initialize_settings() {
+	 
+		function wp_notes_widget_twitter_credentials_callback(  ) { 
+			?>
+			
+			<p class="wp-notes-widget-limit-width" >
+				<?php _e( 'Enter the credentials from the Twitter application you have set up. You can set up a new application on the 
+					<a href="https://apps.twitter.com" target="_blank" >Twitter Application Management</a> 
+					page. You will need these credentials in order to automatically post your Notes to your Twitter account. 
+					Be sure to allow for read <strong>and write</strong> privileges. 
+					', 'wp-notes-widget' ); ?>
+			</p>
+
+			<?php
+		}
+	 
+		function wp_notes_widget_twitter_key_callback(  ) { 
+
+			$options = get_option( 'wp_notes_widget_twitter_credentials' );	
+			if (!isset($options['api_key'])){
+				$options['api_key'] = '';
+			}
+			?>
+				<input type='text' name='wp_notes_widget_twitter_credentials[api_key]' value='<?php echo $options['api_key']; ?>' class="wp-notes-widget-long" >
+			<?php
+		}
+
+		function wp_notes_widget_twitter_secret_callback(  ) { 
+
+			$options = get_option( 'wp_notes_widget_twitter_credentials' );
+			if (!isset($options['api_secret'])){
+				$options['api_secret'] = '';
+			}
+			?>
+				<input type='text' name='wp_notes_widget_twitter_credentials[api_secret]' value='<?php echo $options['api_secret']; ?>' class="wp-notes-widget-long" >
+			<?php
+		}
+
+
+		function wp_notes_widget_twitter_token_callback(  ) { 
+
+			$options = get_option( 'wp_notes_widget_twitter_credentials' );
+			if (!isset($options['token'])){
+				$options['token'] = '';
+			}
+			?>
+				<input type='text' name='wp_notes_widget_twitter_credentials[token]' value='<?php echo $options['token']; ?>' class="wp-notes-widget-long" >
+			<?php
+		}
+
+		function wp_notes_widget_twitter_token_secret_callback(  ) { 
+
+			$options = get_option( 'wp_notes_widget_twitter_credentials' );
+			if (!isset($options['token_secret'])){
+				$options['token_secret'] = '';
+			}
+			?>
+				<input type='text' name='wp_notes_widget_twitter_credentials[token_secret]' value='<?php echo $options['token_secret']; ?>' class="wp-notes-widget-long" >
+			<?php
+		}
+
+
+	  // If the credential options don't exist, create them.
+	  if( false == get_option( 'wp_notes_widget_twitter_credentials' ) ) {  
+	    add_option( 'wp_notes_widget_twitter_credentials' );
+	  } // end if
+
+
+	  // First, we register a section. 
+	  add_settings_section(
+	    'wp_notes_widget_twitter_credentials',         		// ID used to identify this section and with which to register options
+	    'Twitter API Credentials',                  			// Title to be displayed on the administration page
+	    'wp_notes_widget_twitter_credentials_callback', 	// Callback used to render the description of the section
+	    'wp_notes_widget_twitter_credentials_page'     		// Page on which to add this section of options
+	  );
+	  
+
+	  // Add fields to our section
+	  add_settings_field( 
+	    'wp_notes_widget_twitter_key',                // ID used to identify the field throughout the theme
+	    'API Key',                           					// The label to the left of the option interface element
+	    'wp_notes_widget_twitter_key_callback',   		// The name of the function responsible for rendering the option interface
+	    'wp_notes_widget_twitter_credentials_page',   // The page on which this option will be displayed
+	    'wp_notes_widget_twitter_credentials'         // The name of the section to which this field belongs	    
+	  );
+	  
+	  add_settings_field( 
+	    'wp_notes_widget_twitter_secret',                     
+	    'API Secret',              
+	    'wp_notes_widget_twitter_secret_callback',  
+	    'wp_notes_widget_twitter_credentials_page',                    
+	    'wp_notes_widget_twitter_credentials'         	    
+	  );
+
+	  add_settings_field( 
+	    'wp_notes_widget_twitter_token',                     
+	    'Access Token',              
+	    'wp_notes_widget_twitter_token_callback',  
+	    'wp_notes_widget_twitter_credentials_page',                    
+	    'wp_notes_widget_twitter_credentials'         	    
+	  );
+
+	  add_settings_field( 
+	    'wp_notes_widget_twitter_token_secret',                     
+	    'Token Secret',              
+	    'wp_notes_widget_twitter_token_secret_callback',  
+	    'wp_notes_widget_twitter_credentials_page',                    
+	    'wp_notes_widget_twitter_credentials'         	    
+	  );	 
+	   
+	  // Finally, we register the fields with WordPress
+	  register_setting(
+	    'wp_notes_widget_twitter_credentials_page',
+	    'wp_notes_widget_twitter_credentials'
+	  );
+	     
+	} //end wp_notes_initialize_settings
+
+
+ 
+  /*============================================================================
+    FEEDBACK ADMIN NOTICE
+  ==============================================================================*/
+
 	/**
 	* Create the notice that will ask users for feedback. 
 	* 
@@ -355,6 +754,4 @@ class WP_Notes_Admin {
 		wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) . 'js/wp-notes-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-
-
 }

@@ -3,14 +3,16 @@ Contributors: _silver
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 0.1.4
+Stable tag: 0.2.0
 License: GPLv2 or later
 
 Display important, short, time sensitive text and media in a 'sticky note' style. 
 
 == Description ==
 
-** New in version 0.1.4: control the font size of WP Notes Widget and easily tweet your notes. **   
+**If you like WP Notes Widget be sure to check out [Notes Widget Wrapper]('https://wordpress.org/plugins/notes-widget-wrapper') as well.**  
+
+**New in version 0.2.0: Automatically post notes to your Twitter account.**
 
 Posts and pages have their own characteristics and uses, but sometimes there is a need to display important, very short, time sensitive information which don't really fit into a post or page. WP Notes Widget fills this gap. The visual design is similar to real sticky notes which adds to the effective communication of the message.    
 
@@ -45,24 +47,37 @@ The following points explains the settings available on the widget administratio
 Displays the date when the note was published. If desired, this date can be changed even after the note is published.
 
 
-= I will use my own CSS styles for WP Notes Widget = 
+** I will use my own CSS styles for WP Notes Widget ** 
 If you intend to use your own CSS styles, choose this option (for advanced users).
 
 
-= Use my theme's widget wrapper for WP Notes Widget = 
+** Use my theme's widget wrapper for WP Notes Widget ** 
 Select this option if you would like to use the generic wrapper your theme uses for all widgets, in a given widget area. Depending on what the widget wrapper does (adds padding, margins, borders, etc) WP Notes Widget may or may not look better with this option checked. Experiment and see what looks best with your theme. Be sure to test at different screen widths.
 
 
-= Hide WP Notes Widget if there are no published notes available =
+** Hide WP Notes Widget if there are no published notes available **
 This option prevents WP Notes Widget from displaying entirely if there are no notes to display. Alternatively, a generic note with the text "There are no notes to display right now." will be displayed when this option is not activated.
 
 
-= Use individual "sticky notes" for each note =
+** Use individual "sticky notes" for each note **
 This option separates out each note into it's own individual "sticky note". Take a look at the screen shots for a visual example.    
 
 
-= Enable social sharing of notes =
+** Enable social sharing of notes **
 This option creates a "tweet" link below the note. It allows users to easily share the content of your note on their Twitter account.
+
+
+= Setting up Automatic Posting to Twitter =
+
+In order to set up automatic posting you Twitter, you will need to set up a couple things:
+
+* A Twitter account that has been authenticated with your mobile phone number
+* A new Twitter application with read and write permissions
+
+For more information on setting up a Twitter App check out [apps.twitter.com](https://apps.twitter.com/).
+
+Once you have the appropriate credentials, you can follow the instructions on any Note page in your Wordpress admin.
+
 
 == Frequently Asked Questions ==
 
@@ -78,7 +93,14 @@ The images used in the screenshots are a PNG file and have been created with a t
 
 You can attach any download that Wordpress supports. In many cases it would make sense to have .PDF file as an attachment but any file type in your media library will work. This includes .mp3s, images, even video files. 
 
+= I can't get my tweets to post to my Twitter account =
 
+There are a few possible reasons why you are experiencing difficulties:
+
+* You did not check the "send tweet on publish or update" checkbox
+* Your tweet is over the 140 character limit
+* You did not enter the proper authentication credentials 
+* You are trying to tweet an exact duplicate of a tweet you recently posted 
 
 == Screenshots ==
 
@@ -89,14 +111,19 @@ You can attach any download that Wordpress supports. In many cases it would make
 5. The show what the front end of the website looks like using the configuration specified. The layout will naturally differ depending on what theme is being used. 
 6. This is the same configuration as screenshot number 5, but in this example we are using the 'Use individual "sticky notes" for each note' option
 7. This is the same configuration as screenshot number 5, but in this example we are using different style settings
+8. Using screen shot 1 as an example, this is what the tweet looks like once posted to Twitter
 
 
 == Changelog ==
 
+= 0.2.0 =
+* added automatic posting of notes to Twitter
+* cleaned up code and code commenting
+
 = 0.1.4 =
 * optimized and simplified LESS code
 * added font size controls
-* added optional, automatic, twitter tweet link
+* added optional, automatic, Twitter tweet link
 
 = 0.1.3 =
 * cleaned up code to be more consistent and reuseable
