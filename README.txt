@@ -6,7 +6,7 @@ Tested up to: 4.1
 Stable tag: 0.2.0
 License: GPLv2 or later
 
-Display important, short, time sensitive text and media in a 'sticky note' style. 
+Display important, short, time sensitive text and media in a 'sticky note' style. Auto Tweet your notes.
 
 == Description ==
 
@@ -69,7 +69,7 @@ This option creates a "tweet" link below the note. It allows users to easily sha
 
 = Setting up Automatic Posting to Twitter =
 
-In order to set up automatic posting you Twitter, you will need to set up a couple things:
+In order to set up automatic posting your Twitter account, you will need to set up a couple things:
 
 * A Twitter account that has been authenticated with your mobile phone number
 * A new Twitter application with read and write permissions
