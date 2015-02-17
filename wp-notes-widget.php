@@ -30,8 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * The code that runs during plugin activation.
  */
-//require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-notes-activator.php';
-require_once 'C:\Users\user\Documents\Websites\wpnotes.dev\wp-content\plugins\wp-notes-widget\trunk\\' . 'includes/class-wp-notes-activator.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-notes-activator.php';
 
 /**
  * The code that runs during plugin deactivation.
