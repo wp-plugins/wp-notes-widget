@@ -6,7 +6,7 @@ Tested up to: 4.1
 Stable tag: 0.2.0
 License: GPLv2 or later
 
-Display important, short, time sensitive text and media in a 'sticky note' style. Auto tweet your notes.
+Display important, short, time sensitive text and media in a 'sticky note' style. 
 
 == Description ==
 
@@ -43,39 +43,33 @@ WP Notes Widget has also been designed to work with [WPML](http://wpml.org/).
 
 The following points explains the settings available on the widget administration page:
 
-**Display date when note was published** 
-
+= Display date when note was published = 
 Displays the date when the note was published. If desired, this date can be changed even after the note is published.
 
 
-**I will use my own CSS styles for WP Notes Widget** 
-
+** I will use my own CSS styles for WP Notes Widget ** 
 If you intend to use your own CSS styles, choose this option (for advanced users).
 
 
-**Use my theme's widget wrapper for WP Notes Widget** 
-
+** Use my theme's widget wrapper for WP Notes Widget ** 
 Select this option if you would like to use the generic wrapper your theme uses for all widgets, in a given widget area. Depending on what the widget wrapper does (adds padding, margins, borders, etc) WP Notes Widget may or may not look better with this option checked. Experiment and see what looks best with your theme. Be sure to test at different screen widths.
 
 
-**Hide WP Notes Widget if there are no published notes available**
-
+** Hide WP Notes Widget if there are no published notes available **
 This option prevents WP Notes Widget from displaying entirely if there are no notes to display. Alternatively, a generic note with the text "There are no notes to display right now." will be displayed when this option is not activated.
 
 
-**Use individual "sticky notes" for each note**
-
+** Use individual "sticky notes" for each note **
 This option separates out each note into it's own individual "sticky note". Take a look at the screen shots for a visual example.    
 
 
-**Enable social sharing of notes**
-
+** Enable social sharing of notes **
 This option creates a "tweet" link below the note. It allows users to easily share the content of your note on their Twitter account.
 
 
 = Setting up Automatic Posting to Twitter =
 
-In order to set up automatic posting your Twitter account, you will need to set up a couple things:
+In order to set up automatic posting you Twitter, you will need to set up a couple things:
 
 * A Twitter account that has been authenticated with your mobile phone number
 * A new Twitter application with read and write permissions
