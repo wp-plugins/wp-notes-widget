@@ -20,13 +20,13 @@
  */
 class WP_Notes_Deactivator {
 
-	/**
-	 * This class is not used in this version of the plugin
-	 *
-	 *
-	 */
-	public static function deactivate() {
+  /**
+   * This class is not used in this version of the plugin
+   *
+   *
+   */
+  public static function deactivate() {
 
-	}
+  }
 
 }

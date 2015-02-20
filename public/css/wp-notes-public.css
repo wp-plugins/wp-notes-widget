@@ -82,28 +82,28 @@ aside {
   border-radius: 0 0 120px 120px / 0 0 6px 6px;
   min-height: 150px;
   /*
-				&.text-colour-red {
-					.text-colour(@text-colour-red);
-					a.wp-notes-widget-tweet {
-						color: @text-colour-red
-					}
-				}
-			 */
+        &.text-colour-red {
+          .text-colour(@text-colour-red);
+          a.wp-notes-widget-tweet {
+            color: @text-colour-red
+          }
+        }
+       */
   /*
-				&.background-colour-blue {
-					.background-colour(@background-colour-blue);
-				}
-			 */
+        &.background-colour-blue {
+          .background-colour(@background-colour-blue);
+        }
+       */
   /*
-				&.font-size-minus-30 {
-					font-size:70%;
-				}
-			*/
-  /*	
-				&.font-size-plus-5 {
-					font-size:105%;
-				}
-			*/
+        &.font-size-minus-30 {
+          font-size:70%;
+        }
+      */
+  /*  
+        &.font-size-plus-5 {
+          font-size:105%;
+        }
+      */
 }
 .wp-notes-widget-container.use-wp-notes-style .wp-notes-widget.text-colour-red {
   color: #d6061e !important;
@@ -290,41 +290,41 @@ aside {
 }
 .wp-notes-widget-container.use-wp-notes-style .wp-notes-widget:after {
   /*  
-	    z-index: -1; 
-	    position: absolute; 
-	    background: transparent; 
-	    width: 70%; 
-	    height: 55%; 
-	    content: ''; 
-	    right: 30px; 
-	    bottom: 17px;
-	    -webkit-transform:  skew(15deg) rotate(6deg);
-	    -moz-transform:     skew(15deg) rotate(6deg);
-	    transform:          skew(15deg) rotate(6deg);
-	    -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
-	    -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
-	    box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
-	    display:none;
-	    */
+      z-index: -1; 
+      position: absolute; 
+      background: transparent; 
+      width: 70%; 
+      height: 55%; 
+      content: ''; 
+      right: 30px; 
+      bottom: 17px;
+      -webkit-transform:  skew(15deg) rotate(6deg);
+      -moz-transform:     skew(15deg) rotate(6deg);
+      transform:          skew(15deg) rotate(6deg);
+      -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
+      -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
+      box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
+      display:none;
+      */
 }
 .wp-notes-widget-container.use-wp-notes-style .wp-notes-widget:before {
   /*
-	    z-index: -2; 
-	    position: absolute; 
-	    background: transparent; 
-	    width: 70%; 
-	    height: 55%; 
-	    content: ''; 
-	    left: 30px;
-	    bottom: 17px;
-	    -webkit-transform:  skew(-15deg) rotate(-6deg); 
-	    -moz-transform:     skew(-15deg) rotate(-6deg); 
-	    transform:          skew(-15deg) rotate(-6deg);
-	    -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
-	    -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
-	    box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
-			display:none;
-			*/
+      z-index: -2; 
+      position: absolute; 
+      background: transparent; 
+      width: 70%; 
+      height: 55%; 
+      content: ''; 
+      left: 30px;
+      bottom: 17px;
+      -webkit-transform:  skew(-15deg) rotate(-6deg); 
+      -moz-transform:     skew(-15deg) rotate(-6deg); 
+      transform:          skew(-15deg) rotate(-6deg);
+      -webkit-box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3); 
+      -moz-box-shadow:    0 10px 16px rgba(0, 0, 0, 0.3);
+      box-shadow:         0 10px 16px rgba(0, 0, 0, 0.3);
+      display:none;
+      */
 }
 .wp-notes-widget-container.use-wp-notes-style .wp-notes-widget .header-area {
   position: relative;
@@ -338,10 +338,10 @@ aside {
   top: -10px;
   position: absolute;
   /*
-						&.thumb-tack-colour-blue {
-							background-image: url("../images/thumbtack-blue.png");
-						}
-					*/
+            &.thumb-tack-colour-blue {
+              background-image: url("../images/thumbtack-blue.png");
+            }
+          */
 }
 .wp-notes-widget-container.use-wp-notes-style .wp-notes-widget .header-area .pushpin.thumb-tack-colour-blue {
   background-image: url("../images/thumbtack-blue.png");
@@ -493,10 +493,10 @@ aside {
 }
 .use-wp-notes-style {
   /*
-			.text-colour-red ul.wp-notes-widget-list li {
-				.border-colour(@red-text-colour);
-			}
-		*/
+      .text-colour-red ul.wp-notes-widget-list li {
+        .border-colour(@red-text-colour);
+      }
+    */
 }
 .use-wp-notes-style .text-colour-red ul.wp-notes-widget-list li {
   border-color: #d6061e !important;

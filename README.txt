@@ -3,10 +3,10 @@ Contributors: _silver
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv2 or later
 
-Display important, short, time sensitive text and media in a 'sticky note' style. 
+Display important, short, time sensitive text and media in a 'sticky note' style. Auto Tweet your notes.
 
 == Description ==
 
@@ -19,7 +19,7 @@ Posts and pages have their own characteristics and uses, but sometimes there is 
 To further enhance the functionality of WP Notes Widget you can install these great plugins:
 
 [Post Expirator](https://wordpress.org/plugins/post-expirator/) by Aaron Axelsen
-	
+  
 [Post Types Order](https://wordpress.org/plugins/post-types-order/) by Nsp Code
 
 You can also take advantage of some built in Wordpress functionality which you may not have explored yet:
@@ -27,7 +27,7 @@ You can also take advantage of some built in Wordpress functionality which you m
 * 'post dating' notes so that they only appear once a certain date and time has been reached
 
 WP Notes Widget has also been designed to work with [WPML](http://wpml.org/). 
-	
+  
 
 == Installation ==
 
@@ -43,33 +43,39 @@ WP Notes Widget has also been designed to work with [WPML](http://wpml.org/).
 
 The following points explains the settings available on the widget administration page:
 
-= Display date when note was published = 
+**Display date when note was published** 
+
 Displays the date when the note was published. If desired, this date can be changed even after the note is published.
 
 
-** I will use my own CSS styles for WP Notes Widget ** 
+**I will use my own CSS styles for WP Notes Widget** 
+
 If you intend to use your own CSS styles, choose this option (for advanced users).
 
 
-** Use my theme's widget wrapper for WP Notes Widget ** 
+**Use my theme's widget wrapper for WP Notes Widget** 
+
 Select this option if you would like to use the generic wrapper your theme uses for all widgets, in a given widget area. Depending on what the widget wrapper does (adds padding, margins, borders, etc) WP Notes Widget may or may not look better with this option checked. Experiment and see what looks best with your theme. Be sure to test at different screen widths.
 
 
-** Hide WP Notes Widget if there are no published notes available **
+**Hide WP Notes Widget if there are no published notes available**
+
 This option prevents WP Notes Widget from displaying entirely if there are no notes to display. Alternatively, a generic note with the text "There are no notes to display right now." will be displayed when this option is not activated.
 
 
-** Use individual "sticky notes" for each note **
+**Use individual "sticky notes" for each note**
+
 This option separates out each note into it's own individual "sticky note". Take a look at the screen shots for a visual example.    
 
 
-** Enable social sharing of notes **
+**Enable social sharing of notes**
+
 This option creates a "tweet" link below the note. It allows users to easily share the content of your note on their Twitter account.
 
 
 = Setting up Automatic Posting to Twitter =
 
-In order to set up automatic posting you Twitter, you will need to set up a couple things:
+In order to set up automatic posting your Twitter account, you will need to set up a couple things:
 
 * A Twitter account that has been authenticated with your mobile phone number
 * A new Twitter application with read and write permissions
@@ -115,6 +121,11 @@ There are a few possible reasons why you are experiencing difficulties:
 
 
 == Changelog ==
+
+= 0.2.1 =
+* removed namespacing to be compatible with PHP 5.2.x
+* trimmed potential whitespace from Twitter credentials
+* cleaned up inconsistent tabs/spaces in code indentation
 
 = 0.2.0 =
 * added automatic posting of notes to Twitter
