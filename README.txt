@@ -2,7 +2,7 @@
 Contributors: _silver
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.5
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: 0.2.1
 License: GPLv2 or later
 
